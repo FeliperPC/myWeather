@@ -15,6 +15,10 @@ const forecastContainer = document.querySelector('.forecast-container');
 const days = ['Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sáb.', 'Dom.'];
 
 btnSearch.addEventListener('click', async () => {
+    while (forecastContainer.firstChild) {
+        forecastContainer.removeChild(forecastContainer.firstChild);
+    }
+    forecastContainer.style.display = 'none';
     const cityWeather = await getAPIweather();
     createWeatherContainer(cityWeather);
 });
@@ -26,12 +30,21 @@ btnForecast.addEventListener('click', async () => {
 });
 
 const createWeatherContainer = (objData) => {
-    weatherContainer.style.display = 'flex';
-    cityOutput.innerText = objData.address;
-    countryOutput.innerText = objData.resolvedAddress.split(',')[2];
-    tempOutput.innerText = objData.currentConditions.temp;
-    descriptionOutput.innerText = objData.currentConditions.conditions;
-    imgIconOutput.src = `./images/icons/${objData.currentConditions.icon}.png`;
+    const country = objData.resolvedAddress.split(',')[2];
+    if (typeof country === 'undefined') {
+        Swal.fire({
+            icon: 'error',
+            title: 'Ops ... Algo deu errado.',
+            text: 'Isso não é uma cidade',
+        });
+    } else {
+        weatherContainer.style.display = 'flex';
+        cityOutput.innerText = objData.address;
+        countryOutput.innerText = country;
+        tempOutput.innerText = objData.currentConditions.temp;
+        descriptionOutput.innerText = objData.currentConditions.conditions;
+        imgIconOutput.src = `./images/icons/${objData.currentConditions.icon}.png`;
+    }
 }
 
 const getAPIweather = async () => {
@@ -65,29 +78,35 @@ const forecastContainerDays = (weatherData) => {
 }
 
 const createForecastContainer = (daysAPI) => {
-    daysAPI.forEach((day)=>{
-        const dayBox = document.createElement('div');
+    daysAPI.forEach((day) => {
+        const tempText = document.createElement('div');
+        const tempBox = document.createElement('div');
+        tempBox.id = 'temp-box';
         const dayOfTheWeek = new Date(day.datetime);
         const dayOutput = document.createElement('h1');
-        dayOutput.id = 'forecast-day';
         dayOutput.innerText = days[dayOfTheWeek.getDay()];
+        const mainBox = document.createElement('div');
+        mainBox.classList.add('forecast-day')
         const tempMax = document.createElement('p');
-        tempMax.innerText =`máx : ${day.tempmax}`;
-        tempMax.style.fontWeight ='bold';
+        tempMax.innerText = `máx : ${day.tempmax}`;
+        tempMax.style.fontWeight = 'bold';
         const tempMin = document.createElement('p');
         tempMin.innerText = `min : ${day.tempmin}`;
         const img = document.createElement('img');
         img.src = `./images/icons/${day.icon}.png`;
         const condition = document.createElement('p');
         condition.innerText = day.conditions;
-        condition.id = 'condition-forecast';
+        condition.style.fontStyle = 'italic';
+        tempText.id = 'temp-text';
+        tempText.appendChild(tempMax);
+        tempText.appendChild(tempMin);
+        mainBox.appendChild(dayOutput);
+        mainBox.appendChild(tempBox);
+        tempBox.appendChild(tempText);
+        tempBox.appendChild(img);
+        mainBox.appendChild(condition);
 
-        dayBox.appendChild(dayOutput);
-        dayBox.appendChild(tempMax);
-        dayBox.appendChild(tempMin);
-        dayBox.appendChild(condition);
-        forecastContainer.appendChild(dayBox);
-        forecastContainer.appendChild(img);
+        forecastContainer.appendChild(mainBox);
     });
-    forecastContainer.style.display='flex';
+    forecastContainer.style.display = 'flex';
 }

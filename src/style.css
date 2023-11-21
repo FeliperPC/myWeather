@@ -65,20 +65,37 @@ main{
     box-shadow: 0 0 10px rgba(0, 0, 0); 
     padding: 25px 10px;
 }
-#forecast-day{
-    padding-bottom: 5px;
+.forecast-day{
+    justify-content: space-around;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;   
 }
+
+.forecast-day:nth-child(2){
+    border-left : 1px solid gray;
+    border-right: 1px solid gray;
+}
+#temp-text{
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+#temp-box{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .forecast-container{
     flex-direction: row;
-    justify-content: space-around;
-    width: 70%;
     height: 350px;
+    width: 50%;
+    justify-content: center;
 }
-#condition-forecast{
-    display: flex;
-    font-style: italic;
-    padding-top: 5px;
-}
+
 #weather-container > div{
     display: flex;
     flex: 1;
@@ -95,7 +112,7 @@ main{
     width: 100px;
     padding-left: 20px;
 }
-#btn-forecast{
+#btn-forecast, #btn-reset{
     border : 0 none;
     background-color: #0097DB;
     color: white;
