@@ -14,6 +14,7 @@ const weatherContainer = document.querySelector('#weather-container');
 const btnForecast = document.querySelector('#btn-forecast');
 const forecastContainer = document.querySelector('.forecast-container');
 
+const imgURL = 'https://raw.githubusercontent.com/visualcrossing/WeatherIcons/main/PNG/4th%20Set%20-%20Color/';
 const days = ['Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sáb.', 'Dom.'];
 
 imgLogo.addEventListener('click', () => {
@@ -51,7 +52,8 @@ const createWeatherContainer = async (objData) => {
         countryOutput.innerText = country;
         tempOutput.innerText = `${objData.currentConditions.temp}º`;
         descriptionOutput.innerText = await translate(objData.currentConditions.conditions);
-        imgIconOutput.src = `/images/${objData.currentConditions.icon}.png`;
+        imgIconOutput.src = await `${imgURL}${objData.currentConditions.icon}.png`;
+        console.log(imgIconOutput);
     }
 }
 
@@ -78,7 +80,7 @@ const forecastContainerDays = async (weatherData) => {
             tempmin: `${weatherData.days[i].tempmin}º`,
             tempmax: `${weatherData.days[i].tempmax}º`,
             conditions: await translate(weatherData.days[i].conditions),
-            icon: weatherData.days[i].icon,
+            icon: await `${imgURL}${weatherData.days[i].icon}.png`,
         }
         arrayDays.push(objDay);
     }
@@ -101,7 +103,7 @@ const createForecastContainer = (daysAPI) => {
         const tempMin = document.createElement('p');
         tempMin.innerText = `min : ${day.tempmin}`;
         const img = document.createElement('img');
-        img.src = `/images/${day.icon}.png`;
+        img.src = day.icon;
         const condition = document.createElement('p');
         condition.innerText = day.conditions;
         condition.style.fontStyle = 'italic';
