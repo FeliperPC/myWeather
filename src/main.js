@@ -51,7 +51,7 @@ const createWeatherContainer = async (objData) => {
         countryOutput.innerText = country;
         tempOutput.innerText = `${objData.currentConditions.temp}º`;
         descriptionOutput.innerText = await translate(objData.currentConditions.conditions);
-        imgIconOutput.src = `/images/icons/${objData.currentConditions.icon}.png`;
+        imgIconOutput.src = `/images/${objData.currentConditions.icon}.png`;
     }
 }
 
@@ -101,7 +101,7 @@ const createForecastContainer = (daysAPI) => {
         const tempMin = document.createElement('p');
         tempMin.innerText = `min : ${day.tempmin}`;
         const img = document.createElement('img');
-        img.src = `/images/icons/${day.icon}.png`;
+        img.src = `/images/${day.icon}.png`;
         const condition = document.createElement('p');
         condition.innerText = day.conditions;
         condition.style.fontStyle = 'italic';
