@@ -16,6 +16,7 @@ header{
 #img-logo{
     width: 230px;
     margin-right: 20px;
+    cursor: pointer;
 }
 input:focus{
     outline: none;
@@ -43,10 +44,8 @@ input{
 form{
     background-color: white; 
     border-radius: 20px;
-    width: 730px;
+    width: 600px;
     display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 main{
@@ -63,7 +62,7 @@ main{
     border-radius: 15px;
     border: 2px solid #ddd; 
     box-shadow: 0 0 10px rgba(0, 0, 0); 
-    padding: 25px 10px;
+    padding: 25px 25px;
 }
 .forecast-day{
     justify-content: space-around;
@@ -92,7 +91,7 @@ main{
 .forecast-container{
     flex-direction: row;
     height: 350px;
-    width: 50%;
+    width: 70%;
     justify-content: center;
 }
 
@@ -112,7 +111,7 @@ main{
     width: 100px;
     padding-left: 20px;
 }
-#btn-forecast, #btn-reset{
+#btn-forecast{
     border : 0 none;
     background-color: #0097DB;
     color: white;
@@ -121,4 +120,42 @@ main{
     border-radius: 5px;
     cursor: pointer;
 }
+#btn-forecast:disabled{
+    background-color: #a8d2e6;
+    box-shadow: inset;
+}
 
+@media screen and (max-width: 767px) {
+    #img-logo{
+        width: 160px;
+    }
+    header{
+        padding: 30px;
+    }
+    input{
+        height: 40px;
+    }
+    #weather-container{
+        width: 70%;
+    }
+    #search-button {
+       margin-top: 5px;
+    }
+    .forecast-container{
+
+        flex-direction: column;
+        flex: 1;
+        width: auto;
+        margin-bottom: 50px;
+        width: 70%;
+    }
+    .forecast-day:nth-child(2){
+        border-left : 0 none;
+        border-right: 0 none;
+        border-top : 1px solid gray;
+        border-bottom: 1px solid gray;
+        padding: 10px 0;
+        margin: 10px 0;
+    }
+        
+  }

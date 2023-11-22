@@ -1,7 +1,9 @@
 import './style.css';
 import Swal from 'sweetalert2';
-import weather from './weather.js'
+import weather from './weather.js';
+import translate from './languageAPI.js';
 
+const imgLogo = document.querySelector('#img-logo');
 const btnSearch = document.querySelector('#search-button');
 const cityOutput = document.querySelector('#city');
 const countryOutput = document.querySelector('#country');
@@ -14,7 +16,12 @@ const forecastContainer = document.querySelector('.forecast-container');
 
 const days = ['Seg.', 'Ter.', 'Qua.', 'Qui.', 'Sex.', 'Sáb.', 'Dom.'];
 
+imgLogo.addEventListener('click', () => {
+    location.reload(true);
+});
+
 btnSearch.addEventListener('click', async () => {
+    btnForecast.disabled = false;
     while (forecastContainer.firstChild) {
         forecastContainer.removeChild(forecastContainer.firstChild);
     }
@@ -24,12 +31,13 @@ btnSearch.addEventListener('click', async () => {
 });
 
 btnForecast.addEventListener('click', async () => {
+    btnForecast.disabled = true;
     const cityWeather = await getAPIweather();
-    const daysForecast = forecastContainerDays(cityWeather);
+    const daysForecast = await forecastContainerDays(cityWeather);
     createForecastContainer(daysForecast);
 });
 
-const createWeatherContainer = (objData) => {
+const createWeatherContainer = async (objData) => {
     const country = objData.resolvedAddress.split(',')[2];
     if (typeof country === 'undefined') {
         Swal.fire({
@@ -41,8 +49,8 @@ const createWeatherContainer = (objData) => {
         weatherContainer.style.display = 'flex';
         cityOutput.innerText = objData.address;
         countryOutput.innerText = country;
-        tempOutput.innerText = objData.currentConditions.temp;
-        descriptionOutput.innerText = objData.currentConditions.conditions;
+        tempOutput.innerText = `${objData.currentConditions.temp}º`;
+        descriptionOutput.innerText = await translate(objData.currentConditions.conditions);
         imgIconOutput.src = `./images/icons/${objData.currentConditions.icon}.png`;
     }
 }
@@ -61,15 +69,15 @@ const getAPIweather = async () => {
     }
 }
 
-const forecastContainerDays = (weatherData) => {
+const forecastContainerDays = async (weatherData) => {
     const data = new Date(weatherData.days[0].datetime);
     const arrayDays = [];
     for (let i = 1; i < 4; i += 1) {
         const objDay = {
             datetime: weatherData.days[i].datetime,
-            tempmin: weatherData.days[i].tempmin,
-            tempmax: weatherData.days[i].tempmax,
-            conditions: weatherData.days[i].conditions,
+            tempmin: `${weatherData.days[i].tempmin}º`,
+            tempmax: `${weatherData.days[i].tempmax}º`,
+            conditions: await translate(weatherData.days[i].conditions),
             icon: weatherData.days[i].icon,
         }
         arrayDays.push(objDay);
