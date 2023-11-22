@@ -33,4 +33,4 @@ npm run dev
 Felipe Padovani Caetano - Desenvolvedor Front End
 
 ## Deploy
-Explore o clima clicando [aqui](link).
+Explore o clima clicando [aqui](https://my-weather-mocha.vercel.app/).
