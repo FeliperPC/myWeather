@@ -53,7 +53,6 @@ const createWeatherContainer = async (objData) => {
         tempOutput.innerText = `${objData.currentConditions.temp}º`;
         descriptionOutput.innerText = await translate(objData.currentConditions.conditions);
         imgIconOutput.src = await `${imgURL}${objData.currentConditions.icon}.png`;
-        console.log(imgIconOutput);
     }
 }
 
@@ -75,11 +74,13 @@ const forecastContainerDays = async (weatherData) => {
     const data = new Date(weatherData.days[0].datetime);
     const arrayDays = [];
     for (let i = 1; i < 4; i += 1) {
+        let condition = await translate(weatherData.days[i].conditions);
+        if(condition === 'Apagar') condition = 'Ensolarado';
         const objDay = {
             datetime: weatherData.days[i].datetime,
             tempmin: `${weatherData.days[i].tempmin}º`,
             tempmax: `${weatherData.days[i].tempmax}º`,
-            conditions: await translate(weatherData.days[i].conditions),
+            conditions: condition,
             icon: await `${imgURL}${weatherData.days[i].icon}.png`,
         }
         arrayDays.push(objDay);
